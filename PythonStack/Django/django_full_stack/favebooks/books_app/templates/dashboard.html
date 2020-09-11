@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        #logout {
+            width: 1180px;
+            margin: auto;
+            border-bottom: 2px solid black;
+        }
+            #logout a {
+                position: fixed;
+                top: 30px;
+                right: 50px;
+            }
+
+            #logout h1 {
+                padding: 20px;
+            }
+
+        #container {
+            width: 1000px;
+            margin: auto;
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* #new-book input {
+            margin: 10px 0px;
+        }
+
+        #new-book button {
+            padding: 2px 8px;
+            margin:auto;
+        } */
+    </style>
+
+</head>
+
+<body>
+    <!-- context: current_user, all_books -->
+        <div id="logout">
+            <a href="/logout">Log Out</a>
+            <h1>Success! Welcome {{ current_user.first_name }}!</h1>
+        </div>
+        <div id="container"> 
+        <div id="main">
+            <div id="new-book">
+                <h2>Add A Favorite Book</h2>
+                <form action="/addBook" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="{{ current_user.id }}">
+                    <label>Title</label> <input type="text" name="title"><br />
+                    <label>Description</label><br /> <textarea name="desc"></textarea><br />
+                    <button>Add</button>
+                </form>
+            </div>
+            <div id="booklist">
+                <h1>All Books</h1>
+                <ul>{% for book in all_books %}
+                    <li><a href="/books/{{ book.id }}">{{ book.title }}</a></li>
+                    <p>(added by {{ book.uploaded_by.first_name}} {{ book.uploaded_by.last_name }})</p>
+                    {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

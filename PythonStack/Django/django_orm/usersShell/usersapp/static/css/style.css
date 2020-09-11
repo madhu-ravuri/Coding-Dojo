@@ -1,0 +1,39 @@
+* {
+    margin: auto;
+    width: 700px;
+}
+
+body {
+    text-align: center;
+    width: 100%;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+button {
+    width: 40px;
+}
+
+#top {
+    margin: 80px 0px;
+}
+
+#titles {
+    background-color: dimgray;
+    color: white;
+}
+
+input {
+    display: inline-block;
+    justify-content: space-evenly;
+    width: 200px;
+}
+
+#left {
+    padding: 10px;
+}
+
+#right {
+    padding: 10px;
+}
+
+

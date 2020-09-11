@@ -1,0 +1,49 @@
+command: pip list
+output: Package    Version
+        ---------- -------
+        pip        19.2.3 
+        setuptools 41.2.0 
+
+    explanation: lists the installed packages of the environment
+
+------
+command: deactivate
+    explanation: deactivates the current environment
+
+------
+command: pip3 list
+output: Package    Version
+        ---------- -------
+        pip        19.2.3 
+        setuptools 41.2.0 
+        six        1.12.0 
+        wheel      0.33.1 
+
+    explanation: lists more packages than when we used pip.
+
+------
+command: source py3Env/bin/activate
+    explanation: activates the environment 
+
+------
+command: pip install Django==2.2.4
+output: downloaded and installed the django packages: pytz, sqlparse, Django
+
+------
+command: pip freeze > requirements.txt, then ls
+output: this command listed all the files located on my desktop
+
+------
+command: pip uninstall django
+output: this command is to uninstall packages (in this case, django), it asks you 
+        y/n and I chose no
+
+------
+command: pip show django
+output: because I did not uninstall django, it listed the information about the
+        django package, such as version number, author, license, location, etc.
+
+
+------
+command: pip search Flask
+output: the output was a long list of packages that all include the work 'flask'

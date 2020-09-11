@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit {{ show.title }}</title>
+
+    <style>
+        body {
+            width: 430px;
+            margin: auto;
+            padding: 50px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        #back {
+            position: absolute;
+            top: 10px;
+            right: 40px;
+        }
+
+        .messages {
+            font-family: 'Courier New', Courier, monospace;
+            color: red;
+        }
+
+        #title {
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+            #title input {
+                width: 420px;
+            }
+        
+        #net-date {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #nd-inputs input {
+            width: 47.5%;
+            margin-bottom: 25px;
+        }
+
+        textarea {
+            width: 420px;
+        }
+
+        button {
+            position: absolute;
+            top: 340px;
+            left: 600px;
+            padding: 3px 8px;
+            box-shadow: 2px 2px 0px black;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        #redirect {
+            position: absolute;
+            left: 587px;
+            top: 365px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <a href="/shows" id="back">Go Back</a>
+        <a href="/shows" id="back">Go Back</a>
+        {% if messages %}
+        <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+        <div id="form">
+            <h1>Edit {{ show.title }}</h1>
+            <form action="/shows/{{ show.id }}/update" method="POST">
+                {% csrf_token %}
+                <div id="title"><label>Title</label> <input type="text" name="title" value="{{ show.title }}"></div>
+                <div id="net-date"><label>Network</label> <label>Release Date</label></div> 
+                <div id="nd-inputs"><input type="text" name="network" value="{{ show.network }}">
+                <input type="date" name="date" value="{{ show.date }}"></div>
+                <label>Description</label> <textarea name="desc">{{ show.description }}</textarea>
+                <button>Update</button>
+            </form>
+
+            <p id="redirect"><a href="/shows/{{ show.id }}">Go To Show</a></p>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

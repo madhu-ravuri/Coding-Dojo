@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ninja Gold</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <div id="yourgold">
+        <p>Your Gold: {{ request.session.gold }}</p>
+    </div>
+    <div id="container">
+        <form action="/process_money" method="POST">
+        <div id="farm" class="box">
+            <form action="/process_money" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="building" value="farm">
+            <h3>Farm</h3>
+            <p>(earns 10-20 gold)</p>
+            <button>Find Gold!</button>
+        </form>
+        </div>
+        <div id="cave" class="box">
+            <form action="/process_money" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="building" value="cave">
+            <h3>Cave</h3>
+            <p>(earns 5-10 gold)</p>
+            <button>Find Gold!</button>
+        </form>
+        </div>
+        <div id="house" class="box">
+            <form action="/process_money" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="building" value="house">
+            <h3>House</h3>
+            <p>(earns 2-5 gold)</p>
+            <button>Find Gold!</button>
+        </form>
+        </div>
+        <div id="casino" class="box">
+            <form action="/process_money" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="building" value="casino">
+            <h3>Casino</h3>
+            <p>(earns/takes 0-50 gold)</p>
+            <button>Find Gold!</button>
+        </form>
+        </div>
+    </div>
+    <div id="log">
+        <h4>Activities</h4>
+        <div id="logbox">
+        {% for activity in request.session.activities %}
+            {% if activity.note == "earned" %}
+            <p id="plus">Earned {{ activity.gold }} from the {{ activity.building }} ({{ activity.timestamp }}</p>
+            {% else %}
+            <p id="minus">Entered the casino and lost {{ activity.gold }} ... Ouch! ({{ activity.timestamp }})</p>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+    
+</body>
+</html>

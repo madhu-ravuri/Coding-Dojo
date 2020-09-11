@@ -1,0 +1,85 @@
+(1) create 5 books
+    >>> Book.objects.create(title="C Sharp")
+    <Book: Book object (1)>
+    >>> Book.objects.create(title="Java")
+    <Book: Book object (2)>
+    >>> Book.objects.create(title="Python")
+    <Book: Book object (3)>
+    >>> Book.objects.create(title="PHP")
+    <Book: Book object (4)>
+    >>> Book.objects.create(title="Ruby")
+    <Book: Book object (5)>
+
+(2) create 5 authors
+    >>> Author.objects.create(first_name="Jane", last_name="Austen")
+    <Author: Author object (1)>
+    >>> Author.objects.create(first_name="Emily", last_name="Dickinson")
+    <Author: Author object (2)>
+    >>> Author.objects.create(first_name="Fyodor", last_name="Dostoevsky")
+    <Author: Author object (3)>
+    >>> Author.objects.create(first_name="William", last_name="Shakespeare")
+    <Author: Author object (4)>
+    >>> Author.objects.create(first_name="Lau", last_name="Tzu")
+    <Author: Author object (5)>
+
+(3) change c sharp to c#
+    >>> csharp = Book.objects.get(id=1)
+    >>> csharp.title = "C#"
+    >>> csharp.save()
+
+(4) change first name of 4th author
+    >>> author4 = Author.objects.get(id=4)
+    >>> author4.first_name = "Bill"
+    >>> author4.save()
+
+(5) add book 1 & 2 to author 1
+    >>> author1 = Author.objects.get(id=1)
+    >>> book1 = Book.objects.get(id=1)
+    >>> book2 = Book.objects.get(id=2)
+    >>> author1.books.add(book1)
+    >>> author1.books.add(book2)
+    >>> author1.books.all()
+    <QuerySet [<Book: Book object (1)>, <Book: Book object (2)>]>
+
+(6) add books 1-3 to author 2
+    >>> author2 = Author.objects.get(id=2)
+    >>> book3 = Book.objects.get(id=3)
+    >>> author2.books.add(book1, book2, book3)
+    >>> author2.books.all()
+    <QuerySet [<Book: Book object (1)>, <Book: Book object (2)>, <Book: Book object (3)>]>
+
+(7) add books 1-4 to author 3
+    >>> author3 = Author.objects.get(id=3)
+    >>> book4 = Book.objects.get(id=4)
+    >>> author3.books.add(book1, book2, book3, book4)
+    >>> author3.books.all()
+    <QuerySet [<Book: Book object (1)>, <Book: Book object (2)>, <Book: Book object (3)>, <Book: Book object (4)>]>
+
+(8) add all books to author 4
+    >>> book5 = Book.objects.get(id=5)
+    >>> author4.books.add(book1, book2, book3, book4, book5)
+    >>> author4.books.all()
+    <QuerySet [<Book: Book object (1)>, <Book: Book object (2)>, <Book: Book object (3)>, <Book: Book object (4)>, <Book: Book object (5)>]>
+
+(9) get all authors for book 3
+    >>> book3.authors.all()
+    <QuerySet [<Author: Author object (2)>, <Author: Author object (3)>, <Author: Author object (4)>]>
+
+(10) remove first author of book 3
+    >>> author2.books.remove(book3)
+    >>> book3.authors.all()
+    <QuerySet [<Author: Author object (3)>, <Author: Author object (4)>]>
+
+(11) add author 5 to book 2
+    >>> author5 = Author.objects.get(id=5)
+    >>> author5.books.add(book2)
+    >>> book2.authors.all()
+    <QuerySet [<Author: Author object (1)>, <Author: Author object (2)>, <Author: Author object (3)>, <Author: Author object (4)>, <Author: Author object (5)>]>
+
+(12) get all books by author 3
+    >>> author3.books.all()
+    <QuerySet [<Book: Book object (1)>, <Book: Book object (2)>, <Book: Book object (3)>, <Book: Book object (4)>]>
+
+(13) get all authors for book 5
+    >>> book5.authors.all()
+    <QuerySet [<Author: Author object (4)>]>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add A Job</title>
+    <style>
+        body {
+            margin: auto;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .messages {
+            font-family: 'Courier New', Courier, monospace;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- context: current_user -->
+    <div id="logout">
+        <a href="/logout">Log Out</a>
+    </div>
+    <div id="container">
+        {% if messages %}
+        <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+        <div id="form">
+            <h1>Hello {{ current_user.first_name }}! Create a job!</h1> 
+            <form action="/jobs/create" method="POST">
+                {% csrf_token %}
+                <label>Job Title</label> <input type="text" name="job">
+                <label>Location</label> <input type="text" name="location">
+                <label>Description</label>
+                <textarea name="desc"></textarea>
+                <button>Submit</button>
+            </form>
+            <form action="/cancel" method="POST">
+                {% csrf_token %}
+            <button>Cancel</button>
+        </form>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

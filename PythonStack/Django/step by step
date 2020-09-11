@@ -1,0 +1,284 @@
+
+MAKE DJANGO PROJECT + APP
+>> activate env, make PROJECT
+    django-admin startproject (projectname)
+>> within project folder, make APP
+    django-admin startapp (appname)
+
+
+
+CONNECT APP AND PROJECT
+>> in PROJECT folder: settings.py > (1) add APP NAME to installed apps // (2) urls.py > add app urls
+        (1)  INSTALLED_APPS = [
+                'dn_app',
+        
+        (2) from django.urls import path, include
+
+            urlpatterns = [
+                path('', include('dn_app.urls'),
+            ]
+
+
+
+MAKING URLS + VIEWS IN APP
+>> make a new urls.py file inside app folder
+    from django.urls import path
+    from . import views
+
+    urlpatterns = [
+        path('', views.index),
+    ]
+>> views file 
+    from django.shortcuts import render, redirect, HttpResponse
+    from . models import Dojos, Ninjas ((MODEL NAMES))
+
+    def index(request):
+        return HttpResponse("hello hello")
+
+
+
+ADDING TEMPLATES
+>> make template folder inside app folder, add index.html file
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Users Data</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    </head>
+    <body>
+        <div id="top">
+        <table>
+            <tr>
+                {% for user in all_users %}
+                <td>{{ user.id }}</td>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.email_address }}</td>
+                <td>{{ user.age }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        </div>
+    </body>
+    </html>
+>> add css: make statics folder inside app folder, add style.css file (^ stylesheet link)
+>> in views file: 
+    from django.shortcuts import render, redirect
+    from .models import Users
+
+    # Create your views here.
+    def index(request):
+        context = {
+            'all_users' : Users.objects.all(),
+        }
+        return render(request, "index.html", context)
+
+
+
+
+MAKING MODELS
+>> in models file, define class and attributes of class
+    from django.db import models
+
+    class Dojos(models.Model):
+        name = models.CharField(max_length=255)
+        city = models.CharField(max_length=255)
+        state = models.CharField(max_length=2)
+        desc = models.TextField(null=True)
+        created_at = models.DateTimeField(auto_now_add=True)
+	    updated_at = models.DateTimeField(auto_now=True)
+
+>> for ONE TO MANY connected models, use FOREIGNKEY (NEEDS on_delete)
+    class Ninjas(models.Model):
+        dojo_id = models.ForeignKey(Dojos, related_name="ninja_dojo", on_delete=models.CASCADE)
+        first_name = models.CharField(max_length=255)
+        last_name = models.CharField(max_length=255)
+
+>> for MANY TO MANY, use ManyToManyField
+class Books(models.Model):
+    title = models.CharField(max_length=255)
+    desc = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    uploaded_by = models.ForeignKey(
+        User, 
+        related_name="books_uploaded",
+        on_delete=models.CASCADE
+    ) # gives us user who uploaded book
+
+    liked_list = models.ManyToManyField(
+        User,
+        related_name = "liked_books"
+    ) # gives us list of books the user liked
+
+>> FOR MODEL MANAGER:
+    ** we make a validator function that passes in the form data (postData)
+    ** make a errors dictionary to hold the flash messages
+        -- len = length
+        -- for email (first 'import re' at top), put this at beginning of function:
+            def basic_validator(self, postData):
+                EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+        -- for passwords, make sure confirm matches password
+        -- 
+    class BookManager(models.Manager):
+    def basic_validator(self, postData):
+        errors = {}
+
+        if len(postData['title']) == 0:
+            errors['title'] = "Please enter a valid title."
+        if not EMAIL_REGEX.match(postData["email"]):
+            errors["email"] = "Please enter a valid email address"
+        if len(postData["password"]) < 8:
+            errors["password"] = "Please enter a password at least 8 characters long"
+        if postData["password"] != postData["confirmPW"]:
+            errors["confirmPW"] = "Please ensure both passwords match"
+        
+    
+    ** to connect to model (ex: book model), under class Book:
+        objects = BookManager()
+
+
+
+MAKE MIGRATIONS !!!!! AFTER BUILDING MODELS/SETTING UP VIEWS/URLS
+>> if using session, needs to migrate to store variables in the session
+>> make migrations (not yet started server)
+    python manage.py makemigrations
+    python manage.py migrate
+>> have to do this EVERY TIME, so if you leave shell, do this again before
+    starting again
+
+
+
+RUN SHELL AND IMPORT MODELS
+>> go into SHELL
+    python manage.py shell 
+>> (in shell) import models from app name 
+    from (app name).models import (class name), (class name)
+            ex: from dn_app.models import Dojos, Ninjas
+
+
+INSIDE SHELL, CREATING OBJECTS
+>> (modelname).objects.create(attribute="", attribute="", etc.)
+    Dojos.objects.create(name="SJ", city="San Jose" state="CA")
+>> for connected objects
+    firstDojo = Dojos.objects.get(id=1)
+    Ninjas.objects.create(dojo_id=firstDojo, first_name="Evan", last_name="Cho")
+
+
+
+REGISTRATION FORM 
+>> form: method="POST", action="[path to execute register function], CSRF_TOKEN !!!!
+>> name fields are used in request.POST[(name field)]
+    <div id="reg-form">
+            <h1>Registration</h1>
+            <form action="/register" method="POST">
+                {% csrf_token %}
+                <div id="labels">
+                    <label>First Name</label><input type="text" name="firstname"> --> request.POST["firstname"]
+                    <label>Last Name</label><input type="text" name="lastname">
+                    <label>Email</label><input type="text" name="email">
+                    <label>Password</label><input type="password" name="password">
+                    <label>Confirm PW</label><input type="password" name="confirmPW">
+                </div>
+                <button>Register</button>
+            </form>
+        </div>
+
+>> make manager for user model:
+    ** import re <---- AT TOP OF MODELS FILE 
+    ** connect User to Manager w/ objects = UserManager() in User class
+    class UserManager(models.Manager):
+        def basic_validator(self, postData):
+            EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+
+             errors = {}
+        if len(postData["firstname"]) < 2:
+            errors["firstname"] = "First Name should be at least 2 characters"
+        if len(postData["lastname"]) < 2:
+            errors["lastname"] = "Last Name should be at least 2 characters"
+        if not EMAIL_REGEX.match(postData["email"]):
+            errors["email"] = "Please enter a valid email address"
+        if len(postData["password"]) < 8:
+            errors["password"] = "Please enter a password at least 8 characters long"
+        if postData["password"] != postData["confirmPW"]:
+            errors["confirmPW"] = "Please ensure both passwords match"
+        return errors
+
+>> make register function in views.py
+    (1) make imports
+        from django.contrib import messages
+        import bcrypt
+    (2) add to function:
+        def register_user(request)
+            user_errors = User.objects.basic_validator(request.POST)
+
+            if len(user_errors) > 0:
+                for key, value in user_errors.items():
+                    messages.user_error(request, value)
+                
+                return redirect("/")
+            
+            else:
+                hashed_pw = bcrypt.hashpw(
+                    request.POST["password"].encode(),
+                    bcrypt.gensalt()
+                ).decode()
+
+                newUser = User.objects.create(
+                    first_name = request.POST['firstname'],
+                    last_name = request.POST['lastname'],
+                    email = request.POST['email'],
+                    password = hashed_pw
+                )
+
+            # adds id to the session so we can utilize the user info
+            request.session["user_id"] = newUser.id --> can be used in multiple functions
+            return redirect("/success")
+
+
+LOGIN FORM
+>> html
+    <div id="login-form">
+            <h1>Log In</h1>
+            <form action="/login" method="POST">
+                {% csrf_token %}
+                <label>Email</label> <input type="text" name="email">
+                <label>Password</label> <input type="password" name="password">
+                <button>Log In</button>
+            </form>
+        </div>
+
+>> function (views.py)
+def login_user(request):
+    potential_user = User.objects.filter(email=request.POST["email"])
+
+    # check that user exists
+    if len(potential_user) == 0:
+        print("email not in database")
+        messages.error(request, "Please check your email & password")
+        
+        return redirect("/")
+    
+    # check if password matches
+    if not bcrypt.checkpw(
+        request.POST["password"].encode(),
+        potential_user[0].password.encode()
+    ):
+        messages.error(request, "Please check your email & password")
+
+        return redirect("/")
+
+    # log user in if everything is fine
+    request.session["user_id"] = potential_user[0].id 
+    return redirect("/books")
+
+>> LOGOUT USER !!!!
+    def logout_user(request):
+        request.session.clear()
+
+        return redirect("/")

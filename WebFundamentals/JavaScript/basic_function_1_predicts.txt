@@ -1,0 +1,143 @@
+
+CORRECT PREDICTIONS: 13/15
+
+1)
+prediction:
+    console: 35
+
+outcome:
+    console: 35
+
+2)
+prediction:
+    console: 8
+
+outcome:
+    console: 8
+
+
+3)
+prediction:
+    a(2) -> return: 2
+    a(4) -> return: 4
+    console: 2 + 4 = 6
+
+outcome:
+    console: 6
+
+4)
+prediction:
+    var b: 3 -> 9
+    function console: 3
+    return: 9
+    main console: 9
+
+outcome:
+    function console: 3
+    main console: 9
+
+5)
+prediction:
+    var b: 10 -> 40
+    return: 40
+    function console:
+    main console: 40
+
+outcome:
+    function console:
+    main console: 40
+
+6)
+prediction:
+    var b: 15
+    return: 4
+    function console:
+    main console: 4
+
+outcome:
+    function console:
+    main console: 4
+
+7)
+prediction:
+    main console: 10, 3 -> 30
+
+    a(3,10)
+        var b: 3
+        var c: 10
+        return: 30
+
+outcome:
+    main console: 10, 3 -> 30
+
+8)
+prediction:
+    main console: 3 4
+
+outcome:
+    main console: 3 4
+
+9)
+prediction:
+    i: 0 -> 2 -> 3 -> 5 -> 6 -> 8 -> 10
+    function console: 2 -> 5 -> 8
+
+outcome:
+    function console: 2 5 8 11
+
+10)
+prediction:
+    a(0,10)
+        b: 0 
+        c: 10
+        i: 0 1 2 3 4 5 6 7 8 9 10
+        function console: 1 2 3 4 5 6 7 8 9
+        return: 0
+    
+    main console: 0
+
+outcome:
+    console: 0 1 2 3 4 5 6 7 8 9 0 1 2 3 
+
+11)
+prediction:
+    nothing happens
+
+outcome:
+    nothing happened
+
+12)
+prediction:
+    nothing happens
+
+outcome:
+    nothing happened
+
+13)
+prediction:
+    var z: 10 
+    function var z: 15
+    main console: 10
+
+outcome:
+    console: 10
+
+14)
+prediction:
+    var z: 10
+    function var z: 15
+    function console: 15
+    main console: 10
+
+outcome:
+    console: 15 10
+
+15)
+prediction:
+    var z: 10 -> a() = 15 -> 
+    function console: 15
+    return: 15
+    main console: 15
+
+outcome:
+    console: 15 15

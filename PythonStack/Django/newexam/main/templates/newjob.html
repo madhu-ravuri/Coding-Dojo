@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add A Job</title>
+    <style>
+        body {
+            margin: auto;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .messages {
+            color: firebrick;
+            margin: auto;
+            width: 450px;
+            border: 2px solid black;
+            margin-bottom: 40px;
+            box-shadow: 6px 6px dimgrey;
+        }
+
+        #top {
+            width: 1180px;
+            margin: auto;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+
+        #form {
+            width: 400px;
+            margin-left: 50px;
+            padding: 20px 50px;
+            border: 2px solid black;
+        }
+
+        input {
+            margin-bottom: 20px;
+        }
+
+        #buttons {
+            display: flex;
+            justify-content: center;
+        }
+
+        button {
+            margin: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- context: current_user -->
+    <div id="top">
+        <h2>Hello {{ current_user.first_name }}! Create a job!</h2>
+        <a href="/logout">Log Out</a>
+    </div>
+    <div id="container">
+        {% if messages %}
+        <ul class="messages">
+                {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+        </ul>
+        {% endif %}
+        <div id="form"> 
+            <form action="/jobs/create" method="POST">
+                {% csrf_token %}
+                <label>Job Title</label> <input type="text" name="job"><br />
+                <label>Location</label> <input type="text" name="location"><br />
+                <label>Description</label>
+                <textarea name="desc"></textarea><br />
+                <div id="buttons"><button>Submit</button>
+            </form>
+            <form action="/cancel" method="POST">
+                {% csrf_token %}
+            <button>Cancel</button></div>
+        </form>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

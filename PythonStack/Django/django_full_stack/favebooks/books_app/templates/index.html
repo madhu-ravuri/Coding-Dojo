@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration & Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        .messages {
+            color:darkred;
+            margin: auto;
+            width: 400px;
+        }
+            .messages p {
+                line-height: 0;
+            }
+        
+        #container {
+            width: 800px;
+            margin: auto;
+            display: flex;
+            padding: 40px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #reg-form {
+            width: 40%;
+            margin-right: 150px;
+            display: inline-block;
+            vertical-align: top;
+        }
+            #reg-form label {
+                display: inline-block;
+                align-items: stretch;
+                margin: 0px 20px 10px 0px;
+            }
+        
+        button {
+            margin-top: 20px;
+            padding: 2px 10px;
+        }
+
+        #login-form {
+            display: inline-block;
+        }
+            #login-form label {
+                margin: 20px 0px;
+            }
+
+            #pass {
+                margin-top: 20px;
+            }
+    </style>
+</head>
+
+<body>
+    {% if messages %}
+    <ul class="messages">
+            {% for message in messages %}
+                <p {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</p>
+            {% endfor %}
+    </ul>
+    {% endif %}
+    <div id="container">
+        <div id="reg-form">
+            <h1>Registration</h1>
+            <form action="/register" method="POST">
+                {% csrf_token %}
+                <div id="labels">
+                    <label>First Name</label><input type="text" name="first_name">
+                    <label>Last Name</label><input type="text" name="last_name">
+                    <label>Email</label><input type="text" name="email">
+                    <label>Password</label><input type="password" name="password">
+                    <label>Confirm</label><input type="password" name="confirmPW">
+                </div>
+                <button>Register</button>
+            </form>
+        </div>
+
+        <div id="login-form">
+            <h1>Log In</h1>
+            <form action="/login" method="POST">
+                {% csrf_token %}
+                <label>Email</label> <input type="text" name="email">
+                <div id="pass"><label>Password</label> <input type="password" name="password"></div>
+                <button>Log In</button>
+            </form>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

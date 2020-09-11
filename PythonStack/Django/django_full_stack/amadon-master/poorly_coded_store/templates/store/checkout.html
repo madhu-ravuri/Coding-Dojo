@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Amadon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            margin: auto;
+            width: 650px;
+            padding: 80px;
+            text-align: center;
+            font-family: Poppins;
+        }
+
+        #container {
+            margin: auto;
+            padding: 35px 0px;
+            box-shadow: 10px 10px #778DA9;
+            width: 80%;
+            border: 1px solid black;
+        }
+
+        h3 {
+            font-size: 28px;
+            margin-bottom: 38px;
+        }
+
+        p {
+            width: 43%;
+            margin: auto;
+        }
+
+        #redirect, #redirect a {
+            margin-top: 40px;
+            font-size: 13px;
+            text-decoration: none;
+            color: #F7AF9D;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container">
+        <h3>Thank you for your business!</h3>
+        <p>We charged your credit card for ${{ order_charge }}</p>
+        <p>You have ordered {{ total_quantity }} item(s) so far and spent ${{ total_price }} with Amadon.com!</p>
+        <p id="redirect"><a href="/">Go Back</a></p>
+    </div>
+</body>
+
+</html>

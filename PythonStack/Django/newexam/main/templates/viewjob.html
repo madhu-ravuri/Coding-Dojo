@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Job</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        a {
+            color: royalblue;
+        }
+
+        #top {
+            width: 1180px;
+            margin: auto;
+            padding-top: 20px;
+            border-bottom: 2px solid black;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #top button {
+            padding: 2px 8px;
+            margin: 5px;
+        }
+
+        #top a {
+            margin-left: 120px;
+        }
+
+        #container {
+            width: 700px;
+            margin: 20px 60px;
+        }
+
+        #details {
+            margin: 10px 0;
+            border: 2px solid black;
+            padding: 12px;
+        }
+
+            p {
+                padding: 5px;
+            }
+    </style>
+</head>
+
+<body>
+    <!-- context: job, current_user -->
+    <div id="top">
+        <h2>Hello {{ current_user.first_name }}! These are the job details!</h2>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/logout">Log Out</a>
+    </div>
+    <div id="container">
+           <div id="content">
+               <h3>{{ job.job }}</h3>
+               <div id="details">
+                    <p>{{ job.desc }}</p>
+                    <p>Location: {{ job.location }}</p>
+                    <p>Posted by: {{ job.uploaded_by.first_name }}</p>
+                    <p>Posted on: {{ job.created_at }}</p>
+               </div>
+               <a href="/add/{{ job.id }}">Add to my jobs</a> 
+           </div>
+
+    </div>
+
+</body>
+
+</html>

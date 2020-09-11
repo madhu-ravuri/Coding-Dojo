@@ -1,0 +1,19 @@
+(1) cd into directory you want to upload
+
+(2) git init <- to start new repository
+    - ignore warning
+
+(3) git add {fileName}
+    - git add . <- adds all files
+    - git add --all <- adds all
+    - normal for no message
+
+(4) git commit -m "{message}"
+    - finalizes all files
+
+(5) for first time only when creating new repo
+    - use this instructions: …or push an existing repository from the command line
+        - ignore 2nd line, use 1st and 3rd
+
+(6) after repo made, updating files:
+    - git add . (or file name), git commit -m "{message}", git push

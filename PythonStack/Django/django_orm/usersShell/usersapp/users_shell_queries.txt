@@ -1,0 +1,26 @@
+Retrieve all Users:
+    >>> Users.objects.all()
+    <QuerySet [<Users: Users object (1)>, <Users: Users object (2)>, <Users: Users object (3)>]>
+
+Retrieve last User:
+    >>> Users.objects.last()
+    <Users: Users object (3)>  
+
+Retrieve first user:
+    >>> Users.objects.first()
+    <Users: Users object (1)>
+
+Change user id=3:
+    >>> c = Users.objects.get(id=3)
+    >>> c.last_name = "Pancakes"
+    >>> c.save
+    <bound method Model.save of <Users: Users object (3)>>
+
+delete user 2:
+    >>> c = Users.objects.get(id=2)
+    >>> c.delete
+    <bound method Model.delete of <Users: Users object (2)>>
+
+order by first name:
+    >>> Users.objects.all().order_by("first_name")
+    <QuerySet [<Users: Users object (2)>, <Users: Users object (3)>, <Users: Users object (1)>]>

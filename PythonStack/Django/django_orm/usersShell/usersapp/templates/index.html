@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users Data</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <div id="top">
+    <h1>All the Users</h1>
+    <table id="datatable">
+        <tr id="titles">
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Age</th>
+        </tr>
+        <tr>
+            {% for user in all_users %}
+            <td>{{ user.id }}</td>
+            <td>{{ user.first_name }} {{ user.last_name }}</td>
+            <td>{{ user.email_address }}</td>
+            <td>{{ user.age }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    </div>
+
+    <h1>Add a User</h1>
+    <div id="bottom">
+    <form action="/create" method="POST">
+        {% csrf_token %}
+        <div id="left">
+            <label>First Name</label>
+            <input type="text" name="firstname">
+            <label>Last Name</label>
+            <input type="text" name="lastname">
+            
+        </div>
+        <div id="right">
+            
+            <label>Email Address</label>
+            <input type="text" name="email">
+        
+            <label>Age</label>
+            <input type="text" name="age">
+        </div>
+        <button>Add</button>
+    </form>
+    </div>
+</body>
+
+</html>

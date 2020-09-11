@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Dojo Survey</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">    
+</head>
+
+<body>
+    <h1>Submitted Info</h1>
+    <h3>Info Submitted:</h3>
+    <p>Name: {{ name_result }}</p>
+    <p>Dojo Location: {{ loc_result }}</p>
+    <p>Favorite Language: {{ lang_result }}!!!</p>
+    <p>Comment: {{ comments }}</p>
+
+    <button>Go Back</button>
+</body>
+
+</html>
