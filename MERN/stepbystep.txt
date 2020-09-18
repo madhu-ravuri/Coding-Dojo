@@ -1,0 +1,145 @@
+>> RUNNING SERVERS (in two diff terminals) <<
+    - for React (front-end) : npm run start
+        - must be in client/project cd
+    - for MongoDB (back-end) : nodemon server.js
+        - must be in cd w/ server.js file
+
+(1) back end: set up server.js & folder structure
+    - make new project folder, cd into it
+    - within project folder: start new project w/ `npm init -y`
+    - install dependencies: `npm install express` & `npm install mongoose` & 'npm install cors`
+    - create server.js within project folder (terminal: `touch server.js`)
+
+    > within server.js:
+        const express = require('express');
+        const cors = require('cors');
+        const app = express();
+        require('./server/config/mongoose.config');
+        app.use(cors());
+        app.use(express.json());
+        app.use(express.urlencoded({ extended: true }));
+        require('./server/routes/{ROUTES FILE HERE}')(app);
+            
+        app.listen(8000, () => console.log("Listening on port: 8000") );
+    
+    > create folder structure: make server folder w/ config, controllers, models, routes within
+    > create React project called client (in same level as server.js)
+        - `npx create-react-app client`
+
+
+
+(2) front end: set up React project
+    - cd into client folder, install axios
+        - `npm install axios`
+    - inside src folder, make components & views folders
+        - Main.js will go in views
+
+        > Main.js: (after, add `<Main />` in App.js)
+            import React, { useEffect, useState } from 'react'
+            import axios from 'axios';
+            export default () => {
+                const [ message, setMessage ] = useState("Loading...")
+                useEffect(()=>{
+                    axios.get("http://localhost:8000/api")
+                        .then(res=>setMessage(res.data.message))       
+                }, []);
+                return (
+                    <div>
+                        <h2>Message from the backend: {message}</h2>
+                    </div>
+                )
+            }
+
+
+
+(3) configuring database: configs, controller, models, routes
+    - inside configs folder, make mongoose.config.js
+        const mongoose = require('mongoose');
+        mongoose.connect("mongodb://localhost/crmdb", {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        })
+            .then(() => console.log("Established a connection to the database"))
+            .catch(err => console.log("Something went wrong when connecting to the database", err));
+    - make a new model, (ex) Person: person.models.js
+        const mongoose = require('mongoose');
+        const PersonSchema = new mongoose.Schema({
+            firstName: { type: String },
+            lastName: { type: String }
+        }, { timestamps: true });
+        module.exports.Person = mongoose.model('Person', PersonSchema);
+    - inside controller, import model and make createModel function
+        const { Person } = require('../models/person.model'); // CHANGE MODEL NAME & ROUTE
+        
+        module.exports.createPerson = (request, response) => { // CHANGE FUNCTION NAME & KEYS
+            const { firstName, lastName } = request.body;
+            Person.create({
+                firstName,
+                lastName
+            })
+                .then(person => response.json(person))
+                .catch(err => response.json(err));
+        }
+    - add controller to routes and create routes
+        const PersonController = require('../controllers/person.controller'); // CHANGE TO {MODEL}CONTROLLER & ROUTE
+        module.exports = function(app){
+            app.get('/api', PersonController.index); // CHANGE TO {MODEL}CONTROLLER
+            app.post('/api/people', PersonController.createPerson); // CHANGE TO {MODEL}CONTROLLER & FIX ROUTE
+        }
+
+
+
+(4) connect to React 
+    - creating a form in components to add to our database & request from our api
+        import React, { useState } from 'react'
+        import axios from 'axios';
+        export default () => {
+            //keep track of what is being typed via useState hook
+            const [firstName, setFirstName] = useState(""); 
+            const [lastName, setLastName] = useState("");
+            //handler when the form is submitted
+            const onSubmitHandler = e => {
+                //prevent default behavior of the submit
+                e.preventDefault();
+                //make a post request to create a new person
+                axios.post('http://localhost:8000/api/people', { //CHANGE ROUTE TO DATABASE
+                    firstName,
+                    lastName
+                })
+                    .then(res=>console.log(res))
+                    .catch(err=>console.log(err))
+            }
+            //onChange to update firstName and lastName
+            return (
+                <form onSubmit={onSubmitHandler}>
+                    <p>
+                        <label>First Name</label><br/>
+                        <input type="text" onChange = {(e)=>setFirstName(e.target.value)}/>
+                    </p>
+                    <p>
+                        <label>Last Name</label><br/>
+                        <input type="text" onChange = {(e)=>setLastName(e.target.value)}/>
+                    </p>
+                    <input type="submit"/>
+                </form>
+            )
+        }
+    - add form to Main.js
+        import React, { useEffect, useState } from 'react';
+        import PersonForm from '../components/PersonForm';
+        export default () => {
+            return (
+                <div>
+                <PersonForm/>
+                </div>
+            )
+        }
+
+
+
+
+
+
+
+
+
