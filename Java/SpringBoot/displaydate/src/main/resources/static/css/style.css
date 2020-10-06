@@ -1,0 +1,27 @@
+#date {
+	position: absolute;
+	left: 300px;
+	top: 100px;
+	font-size: 40px;
+	color: blue;
+	font-family: Verdana, sans;
+}
+
+#time {
+	position: absolute;
+	left: 540px;
+	top: 100px;
+	font-size: 40px;
+	color: green;
+	font-family: Verdana, sans;
+}
+
+#index {
+	display: flex;
+}
+
+p {
+	margin: 0 auto;
+	margin-top: 100px;
+	font-family: Verdana;
+}
